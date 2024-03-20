@@ -1,0 +1,130 @@
+@import './assets/scss/home.scss';
+@import './assets/scss/nav.scss';
+@import './assets/scss/animations.scss';
+@import './assets/scss/fonts';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:root{
+  --transition-enter: .9s ease;
+  --transition-exit: .8s ease;
+  /* colors */
+  --color1: #89375F;
+  --color2: #CE5959;
+  --color3: #BACDDB;
+  --color4: #F3E8FF;
+  --color5: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(137,55,95,1) 0%, rgba(206,89,89,1) 100%);
+
+
+}
+html, body{
+  background-color: black;
+  color: white;
+  margin: 0;
+  position:relative;
+  font-family: 'Garamond', 'Times New Roman', Times, serif, 'Arial Narrow', Arial, sans-serif;
+  
+}
+
+
+li, a{
+  list-style: none;
+  text-decoration: none;
+}
+html.has-scroll-smooth {
+    overflow: hidden; }
+  
+  html.has-scroll-dragging {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none; }
+  
+  .has-scroll-smooth body {
+    overflow: hidden; }
+  
+  .has-scroll-smooth [data-scroll-container] {
+    min-height: 100vh; }
+  
+  [data-scroll-direction="horizontal"] [data-scroll-container] {
+    height: 100vh;
+    display: inline-block;
+    white-space: nowrap; }
+  
+  [data-scroll-direction="horizontal"] [data-scroll-section] {
+    display: inline-block;
+    vertical-align: top;
+    white-space: nowrap;
+    height: 100%; }
+  
+  .c-scrollbar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 11px;
+    height: 100%;
+    transform-origin: center right;
+    transition: transform 0.3s, opacity 0.3s;
+    opacity: 1; }
+        .c-scrollbar:hover {
+        transform: scaleX(1.45); }
+    .c-scrollbar:hover, .has-scroll-scrolling .c-scrollbar, .has-scroll-dragging .c-scrollbar {
+      opacity: 1; }
+    [data-scroll-direction="horizontal"] .c-scrollbar {
+      width: 100%;
+      height: 10px;
+      top: auto;
+      bottom: 0;
+      transform: scaleY(1); }
+      [data-scroll-direction="horizontal"] .c-scrollbar:hover {
+        transform: scaleY(1.3); }
+  
+  .c-scrollbar_thumb {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: black;
+    opacity: 0.5;
+    width: 7px;
+    border-radius: 10px;
+    margin: .5px;
+    cursor: -webkit-grab;
+    cursor: grab; }
+    .has-scroll-dragging .c-scrollbar_thumb {
+      cursor: -webkit-grabbing;
+      cursor: grabbing; }
+    [data-scroll-direction="horizontal"] .c-scrollbar_thumb {
+      right: auto;
+      bottom: 0; }
+
+      .section-tag{
+        font-weight: 400;
+        font-size: .75rem;
+        letter-spacing: .30rem;
+        width: 100%;
+        font-family: sans-serif;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    
+    }
+    .section-tag::before{
+        content: "";
+        display: inline-block;
+        position: relative;
+        border-color: orange;
+        border-style: solid;
+        background: orange;
+        border-width: 2px;
+        height: .3rem;
+        width: .25rem;
+        margin-right: 15px;
+        
+    }
+    .hl{
+
+      height: 1px;
+      border-bottom: 1px solid;
+    
+  }
