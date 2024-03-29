@@ -1,15 +1,15 @@
 import { useEffect, useState, forwardRef} from "react";
+import { motion } from "framer-motion";
+import reactDom from "react-dom";
+import { useCurtain } from "../hooks/useTriggerCurtain";
 
 
 
+export const Curtain = (props) =>{
 
-export const Curtain = forwardRef(function Curtain(props, ref) {
-    
-    
-    useEffect(()=>{
-        ref;
-    },[])
-      return ( <div style={{...props.style, position:  "absolute", width: "100vw", height:"100vh", backgroundColor: props.color}}></div>
+    const {duration, delay, ease} = props;
+   const drawCurtain = useCurtain()
+      return reactDom.createPortal( <motion.div className='curtain' transition={drawCurtain? {ease: ease, delay: delay, duration: duration}: ''}animate={{x: drawCurtain? '100vw': 0}}></motion.div>, document.getElementById('curtainPortal')
       )
 
- })
+ }

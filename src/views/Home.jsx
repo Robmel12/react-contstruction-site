@@ -1,70 +1,131 @@
 
+
+import { Glide } from "../utils/components/Glide"
 import { Reveal } from "../utils/components/Reveal"
-import { Curtain } from "../utils/components/Curtain"
-import { useState, useRef} from "react"
+import { useState, useRef, useEffect, useLayoutEffect} from "react"
 import { homeContent } from "../utils/home"
-import setDelaySequence from "../utils/hooks/setDelaySequence"
 import Fade from "../utils/components/Fade"
-import { motion } from "framer-motion"
-import SmoothScroll from "../utils/components/SmoothScroll"
+import { motion, useScroll, useTransform, useMotionValue, AnimatePresence} from "framer-motion"
+import { useScrollPosition } from "../utils/hooks/useScrollPosition"
+
 
 export const Home = () => {
-    const [titleHeadings, setTitleHeadings] = useState('')
-    const [reverse, setReverse] = useState(false);
-    const BackgroundImg = useRef(null)
-    const MainImageReveal = useRef(null)
-    const MainImage = useRef(null)
-    const SectionTwoImage = useRef(null)
-    const curtainRef = useRef()
-    console.log(BackgroundImg)
+    
+   const { scrollY }=useScrollPosition()
+   const scrollPosition = useMotionValue(0)
+   scrollPosition.set(scrollY)
+    const ImageYTrans = useTransform(scrollPosition, (latest)=> {
+        return -latest*1.2} )
+    const LogoTrans = useTransform(scrollPosition, (latest)=> {
+            return -latest*.5} )
+    const HeadingTrans = useTransform(scrollPosition, (latest)=> {
+        return -latest*.7} )
+    const fromRight = {
+        initial: {
+          clipPath: 'inset(0 0 0 100%)',
+          transition: {duration: 1, ease: 'easeOut'}
+        },
+        animate: {
+          clipPath: 'inset(0 0 0 0)',
+          transition: { duration: 1.05, delay: .75, ease: 'easeOut'}, 
+        },
+       
+      }
+      const growLineFromLeft ={
+        initial:{
+            width:0
+        },
+        animate:i=>({
+            width: i.width,
+            transition:{duration: 1, delay: i.delay + i.shift}
+        })
 
+      }
+      const RotateInChildren={
+        initial:{
+            opacity: 0,
+            rotate: 90,
+            y: 100,
+          
+        },
+        animate:{
+            opacity: [0, .2, .5, .8, 1],
+            rotate: 0,
+            y: [100, 0],
+            transition: {ease: 'easeInOut', duration: .9}
+            
+        },
+        // exit:{
+        //     opacity: 1,
+        //     rotate: 0,
+        //     y: 0,
+
+        // }
+      }
+      const RotateInContainer ={
+        initial:{
+            opacity: 1,
+
+        },
+        animate:{
+            opacity: 1,
+            transition: { when: "beforeChildren", delayChildren: 1.25, staggerChildren: .5}
+        }
+        // exit:{
+        //     opacity: 1,
+        //     transition: {duration: 1, delay: 3, delayChildren: .5, staggerChildren: .5, staggerDirection: -1}
+        // }
+
+      }
+      const FadeIn ={
+        initial:{
+            opacity: 0
+        },
+        animate:{
+            opacity: 1,
+            transition:{duration: 1, delay: 4}
+        }
+
+      }
+      const  underline = [{delay: 3.5, shift:0, width: '150px'},{delay:3.5, shift: 1, width:'20px'}].map((item, i)=>{
+       return <motion.span key={i} animate='animate' initial='initial' variants={growLineFromLeft} custom={item} class="hl relative h-1 inline-block mt-2"></motion.span>
+      })
+   
 const {hero_image, home_intro} = homeContent;
 const headings = hero_image.title.headings.map((e, index)=>{
-    return <motion.h1 key={e}>{e}</motion.h1>
+    return <motion.h1 variants={RotateInChildren} style={{transformOrigin: 'top left'}} custom={{index:index, max: hero_image.title.headings.length }} className="text-8xl font-sans georama font-semibold leading-tight long-shadow" key={e}>{e}</motion.h1>
 })
-const headingsLogo = setDelaySequence({reverse:true,el: 'img', delay: 1.9, array: [hero_image.title.image], props: {alt: hero_image.title.image.alt, className: `logo fade-in ${titleHeadings}`, src: require(`../assets/imgs/${hero_image.title.image.src}`)}})
-const headingsLine = setDelaySequence({el: 'div', array: [{}], delay: 2.3, props: {className: `hl grow ${titleHeadings}`}} )
+
+
     return(
         <>  
   
 
-    <section className="home">
+    <section className="home block relative flex w-screen flex-col h-full">
    
    
 
     
-    <section className='home-intro flex' >
-    <div className="hero-image">
-   <img alt={hero_image.background.image.alt} className="background-image" src={require(`../assets/imgs/${hero_image.background.image.src}`)}/>
-    <div class="background-gradient"></div> 
-   
+    <section className=' block w-full relative' style={{height: '92dvh', minHeight: '400px'}}>
+    <div className="hero-image block relative w-full h-full">
+    <Glide className='main-image h-full' style={{width: '110%'}} x={0} from={-10}ease="easeOut" duration={.5} delay={1.2}><img alt={hero_image.background.image.alt} className="h-full object-cover" style={{width: '110%'}}src={require(`../assets/imgs/${hero_image.background.image.src}`)}/></Glide>
+    <div class="background-gradient absolute block w-full h-full z-10 top-0"></div> 
+    
     </div>
-    
-  
-        <section className="flex">
-                <div className="hero-image" >
-        {/* <Reveal  ref={MainImageReveal} direction="showRight"> */}
-            <img src={require(`../assets/imgs/${hero_image.background.image.src}`)} className="main-image"/>
-        {/* </Reveal> */}
-        </div>
- 
+        <motion.div style={{y:LogoTrans, left: '16%'}} animate='animate' initial='initial' variants={FadeIn} className="absolute top-28 left-40 z-20"><img className="w-2/5" alt={homeContent.hero_image.title.image.alt}src={require(`../assets/imgs/${hero_image.title.image.src}`)}/></motion.div>
+        <AnimatePresence> <motion.div style={{y:HeadingTrans, left: '15%'}} className="absolute top-48 z-30 mt-2"><motion.div  variants={RotateInContainer} initial='initial' animate='animate'>{headings}</motion.div><div style={{transform: 'translate(150px, -20px)'}}className='flex gap-12 paddingt-0 margint-0'>{underline}</div></motion.div></AnimatePresence>
+    <motion.div style={{y:ImageYTrans, height: '95%'}} className="hero-image absolute w-1/3 top-0  right-48 top-12 z-20"  >
+    <Reveal className='relative block h-full w-5/6' variants={fromRight}>
+        <Glide className='main-image h-full' style={{width: '110%'}} x="-5px" ease="easeIn" duration={.9} delay={1.4}>
+            <img  className='h-full w-full object-cover' src={require(`../assets/imgs/${hero_image.background.image.src}`)}/>
+            </Glide>
+            </Reveal>   
+        </motion.div>       
      
-      <div className="hero-image">
-    
-                <div className="title">
-                <img alt={ hero_image.title.image.alt} className= {`logo ${titleHeadings} reveal active`} src= {require(`../assets/imgs/${hero_image.title.image.src}`) }/>
-                
-                {headings}
-               
-                {headingsLine}
-            
-                </div>
-                </div>
-             
-                </section>
+        
                 </section>
    
-        <section className="section-1">
+        <section className="section-1 mt-16">
           
            
         <div>
@@ -95,7 +156,7 @@ const headingsLine = setDelaySequence({el: 'div', array: [{}], delay: 2.3, props
         
         <div className="container n1">
      
-            <picture alt="Picture of a building." className="rollOutOnScroll">
+            <picture alt="Picture of a building." >
                     <source srcSet={require(`../assets/imgs/${hero_image.background.image.src}`)}/>
                     <img src={require(`../assets/imgs/${hero_image.background.image.src}`)} alt="Picture of a building."/>
                     </picture>
@@ -111,7 +172,8 @@ const headingsLine = setDelaySequence({el: 'div', array: [{}], delay: 2.3, props
 
 
         </section>
-        {/* <Curtain ref={curtainRef} color="black"/> */}
+     
+     
 
    
 

@@ -1,11 +1,14 @@
 import { NavLink } from "react-router-dom"
 import HamburgerButton from "./HamburgerBtn"
 import { useState } from "react"
+import { useDisableScrollUpdate } from "../hooks/useDisableScroll"
 
 export const Nav = ({links}) => {
     const [cross, setcross] = useState(false)
+    const setDisableScroll = useDisableScrollUpdate()
     const hamburgerOnClick= (e)=>{
         setcross(!cross)
+        setDisableScroll(cross)
         
     } 
    const NavLinks = links.map(e=>{

@@ -4,8 +4,13 @@ import { About } from "./views/About";
 import { Routes } from "./assets/js/routes";
 
 import HideBrowserScrollbar from "./utils/hooks/HideBrowserScrollbar";
-import SmoothScroll from "./utils/components/SmoothScroll";
+
 import { useEffect, useState } from "react";
+import MomentumScroll from "./utils/components/MomentumScroll";
+import { Curtain } from "./utils/components/Curtain";
+import { useCurtainUpdate } from "./utils/hooks/useTriggerCurtain";
+import { DisableScrollProvider } from "./utils/hooks/useDisableScroll";
+import { ScrollPositionProvider } from "./utils/hooks/useScrollPosition";
 
 
 
@@ -19,22 +24,31 @@ const App = ()=>{
     const slowFast = 'cubic-bezier(.85,.17,.2,1.03)';
    
     HideBrowserScrollbar()
-    
-    const [loading, setloading] = useState(true)
+    const setDrawCurtain = useCurtainUpdate()
+    useEffect(()=>{
+        setDrawCurtain(true);
+
+    },[])
     const curtainProps = {
         direction:"right", duration:'1s',timingFunction:fastSlow, delay:'1s', color:"black"
     }
 
     return(
     <>
+    <DisableScrollProvider>
+    <ScrollPositionProvider>
     <Nav links={links}/>
- 
+    
+    <MomentumScroll>
     <main >
-  <SmoothScroll>
+        <Curtain duration={1} delay={1} ease={[.1,.7,.8,.9]}/>
    <Outlet/>
-   </SmoothScroll> 
+
    
     </main>
+    </MomentumScroll>
+    </ScrollPositionProvider>
+    </DisableScrollProvider>
 
     </>
     )
