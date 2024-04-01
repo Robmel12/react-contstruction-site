@@ -7,14 +7,6 @@
     height: 100vh;
     background-color: black;
     z-index: 999;
-    transition: transform 3s $fastSlow;
-    &.left{
-        transform: translateX(-100vw);
-    
-    }
-    &.right{
-        transform: translateX(100vw);
-    }
    
 }
 .nudge{

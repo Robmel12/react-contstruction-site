@@ -5,7 +5,8 @@ import './main.scss';
 import { Route, RouterProvider, createBrowserRouter, createHashRouter, createRoutesFromElements } from "react-router-dom";
 import { Error } from "./views/Error";
 import { Routes } from "./assets/js/routes";
-import SmoothScroll from "./utils/components/SmoothScroll";
+import { CurtainProvider } from "./utils/hooks/useTriggerCurtain";
+
 const rootElement = document.querySelector("#root")
 
 const root = ReactDOM.createRoot(rootElement);
@@ -14,7 +15,7 @@ const MainRoutes = Routes.map(e=>{
 })
 
 const router = createHashRouter(createRoutesFromElements(
-    <Route element={<App/>} path='/' errorElement={<Error/>}>
+    <Route element={<CurtainProvider><App/></CurtainProvider>} path='/' errorElement={<Error/>}>
         {MainRoutes}
         {/* <Route path="*" element={<Error/>}></Route> */}
 
