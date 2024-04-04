@@ -41,7 +41,7 @@ const App = ()=>{
     
     <MomentumScroll>
     <main >
-        <Curtain duration={1} delay={1} ease={[.1,.7,.8,.9]}/>
+        <Curtain duration={.5} delay={1} ease={[.1,.9,.92,.95]}/>
    <Outlet/>
 
    

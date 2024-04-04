@@ -1,9 +1,22 @@
 @use './variables' as *;
 @use './fonts' as *;
 .background-gradient{
-    background: linear-gradient(324deg, rgba(0,0,0,0.7497592787114846) 0%, rgba(0,0,0,0.321187850140056) 40%);
+    background: linear-gradient(324deg, rgba(0,0,0,0.7497592787114846) 20%, rgba(0,0,0,0.321187850140056) 80%);
 }
 .hl{
    width: 200px;
    border-bottom: 1px solid white;
+}
+.home{
+    overflow-x: hidden;
+
+    .main-image{
+        filter: contrast(101%) saturate(105%);
+    }
+    .scrolling-upwards{
+        transform: rotate(180deg);
+        writing-mode: vertical-rl;
+text-orientation: mixed;
+        
+    }
 }

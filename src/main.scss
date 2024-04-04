@@ -13,7 +13,10 @@
     "wdth" 100;
 }
 .long-shadow{
-  text-shadow: 9px 3px 8px rgba(0,0,0,0.43);
+  text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
+}
+.long-box-shadow{
+ box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.2);
 }
 .main{
   box-sizing: content-box;
@@ -32,8 +35,6 @@
 }
 // ::-webkit-scrollbar { width: 0 !important }
 html, body{
-  background-color: var(--color1);
-  color: white;
   margin: 0;
   position:relative;
   font-family: 'Garamond', 'Times New Roman', Times, serif, 'Arial Narrow', Arial, sans-serif;
@@ -45,6 +46,23 @@ html, body{
   overflow: auto;
 }
 body {
+  background-color: var(--color1);
+  
+  color: white;
+  transition: background-color 1s, color 1s;
+  &.bright{
+    transition: background-color 1s, color 1s;
+    background-color: var(--color2);
+    color: var(--color4);
+    .section-tag::before{
+
+      border-color: var(--color1);
+
+      background: var(--color1);
+    
+      
+  }
+  }
   overflow-x: hidden;
   overscroll-behavior-y: none;
   user-select: none;
@@ -62,6 +80,7 @@ body {
 
 
       .section-tag{
+        margin-left: 0;
         font-weight: 400;
         font-size: .75rem;
         letter-spacing: .30rem;
@@ -72,22 +91,62 @@ body {
     text-transform: uppercase;
     
     }
+    .arrow-clip{
+      filter: brightness(90%);
+      background-color: #BACDDB;
+      clip-path: polygon(0 50%, 19% 100%, 37% 100%, 16% 50%, 37% 0, 48% 0, 26% 50%, 47% 100%, 91% 100%, 71% 50%, 91% 0, 19% 0);
+    }
     .section-tag::before{
         content: "";
         display: inline-block;
         position: relative;
-        border-color: orange;
+        border-color: var(--color3);
         border-style: solid;
-        background: orange;
+        background: var(--color3);
         border-width: 2px;
-        height: .3rem;
-        width: .25rem;
+        height: .5rem;
+        width: .55rem;
         margin-right: 15px;
         
     }
     .hl{
 
       height: 1px;
-      border-bottom: 1px solid;
+      border-bottom: 2px solid;
     
   }
+  .btn{
+    width: 150px;
+    height: 50px;
+    border: 3px solid var(--color4);
+    display: block;
+    position: relative;
+    color: var(--color4);
+    transition: .8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    &:hover{
+      color: var(--color1);
+      .btn-background{height: 100%;
+      transition: .8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+   }
+      
+    }
+    .btn-background{
+      bottom:0;
+      left:0;
+      display: block;
+      position: absolute;
+      background: var(--color4);
+      height: 0;
+      width: 100%;
+      transform-origin: bottom;
+      transition: .8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      
+      }
+    .btn-text{
+      display: block;
+      position: relative;
+      z-index: 1;
+      background-color: transparent;
+    }
+  }
+  
