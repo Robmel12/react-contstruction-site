@@ -1,16 +1,18 @@
-import { motion, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
 import { useRef} from "react";
 
 
 
 export const FadeOnView= (props)=>{
+
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: props.once});
-    const { children, className='', transition={duration: 1}} = props
+  
+    const { style= {}, children, className='', transition='', once=false} = props
+    const isInView = useInView(ref, {once: once});
     
 
-      return ( <motion.div  ref={ref} className={className} style={ 
-   { opacity: isInView ? 1 : 0, transition: transition}} >{children}</motion.div>
+      return ( <span  ref={ref} className={className} style={ 
+   {...style,  opacity: isInView ? 1 : 0, transition:transition}} >{children}</span>
       )
 
  }

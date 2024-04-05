@@ -14,11 +14,12 @@ import {
 import { useScrollPosition } from "../utils/hooks/useScrollPosition";
 import { InView } from "../utils/components/InView";
 import { FadeOnView } from "../utils/components/FadeOnView";
+import { IsInViewVariants } from "../utils/components/IsInViewVariants";
 
 export const Home = () => {
   const backgroundTransition = useRef(null);
   const section_1Tag = useRef(null)
-  const backgrountTransInView = useInView(backgroundTransition);
+  const backgrountTransInView = useInView(backgroundTransition,{margin: '0px 0px -3000px 0px '});
   const section_1TagInView = useInView(section_1Tag)
   const { scrollY } = useScrollPosition();
   const scrollPosition = useMotionValue(0);
@@ -43,6 +44,16 @@ export const Home = () => {
     animate: {
       clipPath: "inset(0 0 0 0)",
       transition: { duration: 0.75, delay: 1.2, ease: [0, 0.8, 0.5, 0.9] },
+    },
+  };
+  const fromBottom = {
+    initial: {
+      clipPath: "inset(100% 0 0 0 )",
+      // transition: { duration: .8,  ease: [0, 0.8, 0.5, 0.9]},
+    },
+    animate: {
+      clipPath: "inset(0 0 0 0)",
+      transition: { duration: 0.75, ease: [0, 0.8, 0.5, 0.9] },
     },
   };
   const growLineFromLeft = {
@@ -75,6 +86,8 @@ export const Home = () => {
 
     // }
   };
+  
+  const ContentFade = ' opacity .7s ease-in';
   const RotateInContainer = {
     initial: {
       opacity: 1,
@@ -173,11 +186,11 @@ export const Home = () => {
             <div class="background-gradient absolute block w-full h-full z-10 top-0"></div>
           </div>{" "}
           <motion.div
-            style={{ y: LogoTrans, left: "4%" }}
+            style={{ y: LogoTrans, left: "7%" }}
             animate="animate"
             initial="initial"
             variants={FadeIn}
-            className="absolute top-16 left-40 z-20"
+            className="absolute top-36 left-40 z-20"
           >
             <img
               className="w-4/12"
@@ -238,26 +251,31 @@ export const Home = () => {
             <div className="flex flex-row">
               <div className="w-1/2 relative block">
                 
-                <FadeOnView transition={ {duration: 1} }>
+                <FadeOnView transition={ContentFade} once={true}>
                 <h3 ref={section_1Tag} className="section-tag text-xl m-6">
                   {home_intro.section_1.section_tag}
                 </h3>
                 </FadeOnView>
-              
+                <FadeOnView transition={ContentFade} once={true}>
                 <h2 className="heading georama w-full text-6xl">
                   {home_intro.section_1.heading}
                 </h2>
+                </FadeOnView>
               </div>
               <div className="flex justify-center align-center w-1/2 self-center text-8xl relative block h-full">
                 <div className="w-6/12 h-56 arrow-clip object-cover"></div>
               </div>
             </div>
+            <FadeOnView transition={ContentFade}>
             <div className="section-content mt-12 mb-12 w-11/12 flex justify-between">
               <div className="hl w-1/12 mb-12"></div>
+             
               <p className="content justify-self-end w-9/12 text-xl mt-12">
                 {home_intro.section_1.content}
               </p>
+            
             </div>
+            </FadeOnView>
           </section>
 
           <section
@@ -268,19 +286,21 @@ export const Home = () => {
               className="container n1 relative block flex flex-row mb-0"
               style={{ height: "500px" }}
             >
+              <IsInViewVariants  className="w-5/12 block relative overflow-hidden" margin={'-200px'} once={true} variants={fromBottom}>
               <picture
-                className="w-5/12 block relative "
+                className="w-full"
                 alt="Picture of a building."
               >
                 <source
-                  srcSet={require(`../assets/imgs/pexels-scott-webb-1029599.jpg`)}
+                  srcSet={require(`../assets/imgs/pexels-pixabay-279648.jpg`)}
                 />
                 <img
                   className="w-full object-cover h-full"
-                  src={require(`../assets/imgs/${hero_image.background.image.src}`)}
+                  src={require(`../assets/imgs/pexels-pixabay-279648.jpg`)}
                   alt="Picture of a building."
                 />
               </picture>
+              </IsInViewVariants>
               <motion.div
                 style={{ y: ScrollingWordsTrans }}
                 className="text-7xl georama w-6/12 self-center flex justify-center  flex-row"
@@ -290,9 +310,11 @@ export const Home = () => {
                 <p className=" scrolling-upwards"> Precision</p>
               </motion.div>
             </div>
-            <span ref={backgroundTransition}></span>
+            <span ref={backgroundTransition}>
             <div className="container n2 flex mt-0 block relative h-fit">
               <div className="absolute">
+                   
+              <FadeOnView transition={ContentFade} once={true}>
                 <h3
                   className="section-tag"
                   style={{
@@ -303,35 +325,72 @@ export const Home = () => {
                 >
                   From Start To Finish
                 </h3>
+                </FadeOnView>
               </div>
               <div className="w-5/12 flex flex-col justify-center items-center">
                 <div
                   className="w-6/12 text-xl georama flex flex-col justify-center gap-4"
                   style={{ height: "500px" }}
                 >
-                  <h3>MULTIFAMILY RESIDENTIAL</h3>
-                  <h3>HISTORIC RENOVATIONS</h3>
-                  <h3>COMMERCIAL OFFICES</h3>
-                  <h3>RESTAURANTS AND RETAIL</h3>
-                  <h3>COMMUNITY SPACES</h3>
-                  <button className="btn">
+                    
+                <FadeOnView transition={ContentFade} once={true}> <h3>MULTIFAMILY RESIDENTIAL</h3></FadeOnView>
+                  <FadeOnView transition={ContentFade} once={true}><h3>HISTORIC RENOVATIONS</h3></FadeOnView>
+                  <FadeOnView transition={ContentFade} once={true}><h3>COMMERCIAL OFFICES</h3></FadeOnView>
+                  <FadeOnView transition={ContentFade} once={true}><h3>RESTAURANTS AND RETAIL</h3></FadeOnView>
+                  <FadeOnView transition={ContentFade} once={true}><h3>COMMUNITY SPACES</h3></FadeOnView>
+                  <FadeOnView transition={ContentFade} once={true}><button className="btn">
                     <span className="btn-text">About Us</span>
                     <span className="btn-background"></span>
-                  </button>
+                  </button></FadeOnView>
                 </div>
               </div>
+              <IsInViewVariants  className="w-7/12 block relative overflow-hidden"  margin={'-200px'} once={true} variants={fromBottom}>
               <picture alt="Picture of a building." className="w-7/12">
                 <source
-                  srcSet={require("../assets/imgs/pexels-scott-webb-1022936.jpg")}
+                  srcSet={require("../assets/imgs/pexels-vecislavas-popa-1571460.jpg")}
                 />
                 <img
                   className="w-full object-cover"
                   style={{ height: "500px" }}
-                  src={require("../assets/imgs/pexels-rodolfo-quirós-1876045.jpg")}
+                  src={require("../assets/imgs/pexels-vecislavas-popa-1571460.jpg")}
                   alt="Picture of a building."
                 />
               </picture>
+              </IsInViewVariants>
             </div>
+            <div className="container n2 flex mt-28 mb-28 block relative">
+             
+             
+              <IsInViewVariants  className="w-6/12 block relative overflow-hidden" once={true} variants={fromBottom}>
+              <picture alt="Picture of a building." className="w-7/12">
+                <source
+                  srcSet={require("../assets/imgs/pexels-scott-webb-1022936 777x1000.png")}
+                />
+                <img
+                  className="w-full object-cover"
+                  style={{ height: "600px" }}
+                  src={require("../assets/imgs/pexels-scott-webb-1022936 777x1000.png")}
+                  alt="Picture of a building."
+                />
+              </picture>
+              </IsInViewVariants>
+              <div className="w-6/12 flex flex-col justify-center">
+                <div
+                  className="w-full h-full text-xl georama flex flex-col justify-center gap-4"
+                  
+                >
+                    
+                <FadeOnView transition={ContentFade} once={true} style={{transform: 'translate(-200px, -75px)'}}> <h3 className='w-full font-normal georama text-6xl mb-0 padding-0'><span className=' font-bold'>Featured</span> Project</h3></FadeOnView>
+                <FadeOnView transition={ContentFade} once={true}> <h4 className="ml-24 w-full">The Gibson Project</h4></FadeOnView>
+                  <FadeOnView transition={ContentFade} once={true}><button className="btn ml-24">
+                    
+                    <span className="btn-text">View Project</span>
+                    <span className="btn-background"></span>
+                  </button></FadeOnView>
+                </div>
+              </div>
+            </div>
+            </span>
           </section>
         </section>
       </section>

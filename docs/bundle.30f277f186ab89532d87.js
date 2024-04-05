@@ -4548,9 +4548,12 @@ var map = {
 	"./pexels-expect-best-323780.jpg": 6195,
 	"./pexels-matheus-bertelli-2980955-resize.png": 1475,
 	"./pexels-photomix-company-101808.jpg": 8708,
+	"./pexels-pixabay-279648.jpg": 712,
 	"./pexels-rodolfo-quirós-1876045.jpg": 4746,
+	"./pexels-scott-webb-1022936 777x1000.png": 9988,
 	"./pexels-scott-webb-1022936.jpg": 3158,
-	"./pexels-scott-webb-1029599.jpg": 8540
+	"./pexels-scott-webb-1029599.jpg": 8540,
+	"./pexels-vecislavas-popa-1571460.jpg": 2063
 };
 
 
@@ -4587,7 +4590,7 @@ module.exports = __webpack_require__.p + "images/88ec53a44fc7877b6c28.jpg";
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
-module.exports = __webpack_require__.p + "images/89f0e636e4a005eb1e31.png";
+module.exports = __webpack_require__.p + "images/96e02eb9e3d88e29ee2f.png";
 
 /***/ }),
 
@@ -4663,11 +4666,27 @@ module.exports = __webpack_require__.p + "images/01e2dc67ba8a719b8fdd.jpg";
 
 /***/ }),
 
+/***/ 712:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "images/7101e9b50540c3de3a0a.jpg";
+
+/***/ }),
+
 /***/ 4746:
 /***/ (function(module, __unused_webpack_exports, __webpack_require__) {
 
 "use strict";
 module.exports = __webpack_require__.p + "images/55f817ad602ab7341e23.jpg";
+
+/***/ }),
+
+/***/ 9988:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "images/77a0b77575c321be3509.png";
 
 /***/ }),
 
@@ -4684,6 +4703,14 @@ module.exports = __webpack_require__.p + "images/c1fb4f235665ddd7d169.jpg";
 
 "use strict";
 module.exports = __webpack_require__.p + "images/2bd07de8846c8d918710.jpg";
+
+/***/ }),
+
+/***/ 2063:
+/***/ (function(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+module.exports = __webpack_require__.p + "images/2298c2e97696f749d6c2.jpg";
 
 /***/ })
 
@@ -21895,18 +21922,106 @@ var homeContent = {
     section_3: {}
   }
 };
-;// CONCATENATED MODULE: ./src/utils/components/Fade.jsx
+;// CONCATENATED MODULE: ./node_modules/framer-motion/dist/es/render/dom/utils/resolve-element.mjs
 
 
-function Fade(props) {
-  return /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
-    style: {
-      width: '100%',
-      height: '100%'
-    },
-    children: props.children
-  });
+function resolveElements(elements, scope, selectorCache) {
+    var _a;
+    if (typeof elements === "string") {
+        let root = document;
+        if (scope) {
+            errors_invariant(Boolean(scope.current), "Scope provided, but no element detected.");
+            root = scope.current;
+        }
+        if (selectorCache) {
+            (_a = selectorCache[elements]) !== null && _a !== void 0 ? _a : (selectorCache[elements] = root.querySelectorAll(elements));
+            elements = selectorCache[elements];
+        }
+        else {
+            elements = root.querySelectorAll(elements);
+        }
+    }
+    else if (elements instanceof Element) {
+        elements = [elements];
+    }
+    /**
+     * Return an empty array
+     */
+    return Array.from(elements || []);
 }
+
+
+
+;// CONCATENATED MODULE: ./node_modules/framer-motion/dist/es/render/dom/viewport/index.mjs
+
+
+const thresholds = {
+    some: 0,
+    all: 1,
+};
+function inView(elementOrSelector, onStart, { root, margin: rootMargin, amount = "some" } = {}) {
+    const elements = resolveElements(elementOrSelector);
+    const activeIntersections = new WeakMap();
+    const onIntersectionChange = (entries) => {
+        entries.forEach((entry) => {
+            const onEnd = activeIntersections.get(entry.target);
+            /**
+             * If there's no change to the intersection, we don't need to
+             * do anything here.
+             */
+            if (entry.isIntersecting === Boolean(onEnd))
+                return;
+            if (entry.isIntersecting) {
+                const newOnEnd = onStart(entry);
+                if (typeof newOnEnd === "function") {
+                    activeIntersections.set(entry.target, newOnEnd);
+                }
+                else {
+                    observer.unobserve(entry.target);
+                }
+            }
+            else if (onEnd) {
+                onEnd(entry);
+                activeIntersections.delete(entry.target);
+            }
+        });
+    };
+    const observer = new IntersectionObserver(onIntersectionChange, {
+        root,
+        rootMargin,
+        threshold: typeof amount === "number" ? amount : thresholds[amount],
+    });
+    elements.forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+}
+
+
+
+;// CONCATENATED MODULE: ./node_modules/framer-motion/dist/es/utils/use-in-view.mjs
+
+
+
+function useInView(ref, { root, margin, amount, once = false } = {}) {
+    const [isInView, setInView] = (0,react.useState)(false);
+    (0,react.useEffect)(() => {
+        if (!ref.current || (once && isInView))
+            return;
+        const onEnter = () => {
+            setInView(true);
+            return once ? undefined : () => setInView(false);
+        };
+        const options = {
+            root: (root && root.current) || undefined,
+            margin,
+            amount,
+        };
+        return inView(ref.current, onEnter, options);
+    }, [root, ref, margin, once, amount]);
+    return isInView;
+}
+
+
+
 ;// CONCATENATED MODULE: ./node_modules/framer-motion/dist/es/value/use-motion-value.mjs
 
 
@@ -22447,6 +22562,221 @@ function ScrollPositionProvider(_ref) {
     })
   });
 }
+;// CONCATENATED MODULE: ./src/utils/components/InView.jsx
+
+
+var InView = /*#__PURE__*/(/* unused pure expression or super */ null && (forwardRef(function (props, ref) {
+  var children = props.children,
+    IsInView = props.IsInView,
+    _props$className = props.className,
+    className = _props$className === void 0 ? '' : _props$className;
+  return /*#__PURE__*/_jsx("div", {
+    ref: ref,
+    className: className,
+    children: IsInView && children
+  });
+})));
+;// CONCATENATED MODULE: ./src/utils/components/FadeOnView.jsx
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
+
+
+var FadeOnView = function FadeOnView(props) {
+  var ref = (0,react.useRef)(null);
+  var _props$style = props.style,
+    style = _props$style === void 0 ? {} : _props$style,
+    children = props.children,
+    _props$className = props.className,
+    className = _props$className === void 0 ? '' : _props$className,
+    _props$transition = props.transition,
+    transition = _props$transition === void 0 ? '' : _props$transition,
+    _props$once = props.once,
+    once = _props$once === void 0 ? false : _props$once;
+  var isInView = useInView(ref, {
+    once: once
+  });
+  return /*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+    ref: ref,
+    className: className,
+    style: _objectSpread(_objectSpread({}, style), {}, {
+      opacity: isInView ? 1 : 0,
+      transition: transition
+    }),
+    children: children
+  });
+};
+;// CONCATENATED MODULE: ./node_modules/framer-motion/dist/es/animation/hooks/animation-controls.mjs
+
+
+
+
+function stopAnimation(visualElement) {
+    visualElement.values.forEach((value) => value.stop());
+}
+function setVariants(visualElement, variantLabels) {
+    const reversedLabels = [...variantLabels].reverse();
+    reversedLabels.forEach((key) => {
+        const variant = visualElement.getVariant(key);
+        variant && setTarget(visualElement, variant);
+        if (visualElement.variantChildren) {
+            visualElement.variantChildren.forEach((child) => {
+                setVariants(child, variantLabels);
+            });
+        }
+    });
+}
+function setValues(visualElement, definition) {
+    if (Array.isArray(definition)) {
+        return setVariants(visualElement, definition);
+    }
+    else if (typeof definition === "string") {
+        return setVariants(visualElement, [definition]);
+    }
+    else {
+        setTarget(visualElement, definition);
+    }
+}
+/**
+ * @public
+ */
+function animationControls() {
+    /**
+     * Track whether the host component has mounted.
+     */
+    let hasMounted = false;
+    /**
+     * A collection of linked component animation controls.
+     */
+    const subscribers = new Set();
+    const controls = {
+        subscribe(visualElement) {
+            subscribers.add(visualElement);
+            return () => void subscribers.delete(visualElement);
+        },
+        start(definition, transitionOverride) {
+            errors_invariant(hasMounted, "controls.start() should only be called after a component has mounted. Consider calling within a useEffect hook.");
+            const animations = [];
+            subscribers.forEach((visualElement) => {
+                animations.push(animateVisualElement(visualElement, definition, {
+                    transitionOverride,
+                }));
+            });
+            return Promise.all(animations);
+        },
+        set(definition) {
+            errors_invariant(hasMounted, "controls.set() should only be called after a component has mounted. Consider calling within a useEffect hook.");
+            return subscribers.forEach((visualElement) => {
+                setValues(visualElement, definition);
+            });
+        },
+        stop() {
+            subscribers.forEach((visualElement) => {
+                stopAnimation(visualElement);
+            });
+        },
+        mount() {
+            hasMounted = true;
+            return () => {
+                hasMounted = false;
+                controls.stop();
+            };
+        },
+    };
+    return controls;
+}
+
+
+
+;// CONCATENATED MODULE: ./node_modules/framer-motion/dist/es/animation/hooks/use-animation.mjs
+
+
+
+
+/**
+ * Creates `AnimationControls`, which can be used to manually start, stop
+ * and sequence animations on one or more components.
+ *
+ * The returned `AnimationControls` should be passed to the `animate` property
+ * of the components you want to animate.
+ *
+ * These components can then be animated with the `start` method.
+ *
+ * ```jsx
+ * import * as React from 'react'
+ * import { motion, useAnimation } from 'framer-motion'
+ *
+ * export function MyComponent(props) {
+ *    const controls = useAnimation()
+ *
+ *    controls.start({
+ *        x: 100,
+ *        transition: { duration: 0.5 },
+ *    })
+ *
+ *    return <motion.div animate={controls} />
+ * }
+ * ```
+ *
+ * @returns Animation controller with `start` and `stop` methods
+ *
+ * @public
+ */
+function useAnimationControls() {
+    const controls = useConstant(animationControls);
+    use_isomorphic_effect_useIsomorphicLayoutEffect(controls.mount, []);
+    return controls;
+}
+const useAnimation = (/* unused pure expression or super */ null && (useAnimationControls));
+
+
+
+;// CONCATENATED MODULE: ./src/utils/components/IsInViewVariants.jsx
+
+
+
+var IsInViewVariants = function IsInViewVariants(_ref) {
+  var _ref$style = _ref.style,
+    style = _ref$style === void 0 ? '' : _ref$style,
+    children = _ref.children,
+    _ref$className = _ref.className,
+    className = _ref$className === void 0 ? '' : _ref$className,
+    _ref$variants = _ref.variants,
+    variants = _ref$variants === void 0 ? {
+      initial: '',
+      animate: '',
+      exit: ''
+    } : _ref$variants,
+    _ref$once = _ref.once,
+    once = _ref$once === void 0 ? false : _ref$once,
+    _ref$margin = _ref.margin,
+    margin = _ref$margin === void 0 ? '' : _ref$margin;
+  var ref = (0,react.useRef)(null);
+  var isInView = useInView(ref, {
+    once: once,
+    margin: margin
+  });
+  var controls = useAnimationControls();
+  (0,react.useEffect)(function () {
+    if (isInView) {
+      controls.start('animate');
+    } else {
+      controls.start('initial');
+    }
+  }, [isInView, controls]);
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(motion.div, {
+    style: style,
+    animate: controls,
+    variants: variants,
+    ref: ref,
+    className: className,
+    children: children
+  });
+};
 ;// CONCATENATED MODULE: ./src/views/Home.jsx
 
 
@@ -22458,7 +22788,15 @@ function ScrollPositionProvider(_ref) {
 
 
 
+
+
 var Home = function Home() {
+  var backgroundTransition = (0,react.useRef)(null);
+  var section_1Tag = (0,react.useRef)(null);
+  var backgrountTransInView = useInView(backgroundTransition, {
+    margin: '0px 0px -3000px 0px '
+  });
+  var section_1TagInView = useInView(section_1Tag);
   var _useScrollPosition = useScrollPosition(),
     scrollY = _useScrollPosition.scrollY;
   var scrollPosition = useMotionValue(0);
@@ -22467,25 +22805,42 @@ var Home = function Home() {
     return -latest * 1.2;
   });
   var LogoTrans = useTransform(scrollPosition, function (latest) {
-    return -latest * .5;
+    return -latest * 0.5;
   });
   var HeadingTrans = useTransform(scrollPosition, function (latest) {
-    return -latest * .7;
+    return -latest * 0.7;
+  });
+  var ScrollingWordsTrans = useTransform(scrollPosition, function (latest) {
+    return -latest * 0.4 + 300;
   });
   var fromRight = {
     initial: {
-      clipPath: 'inset(0 0 0 100%)',
+      clipPath: "inset(0 0 0 100%)",
       transition: {
         duration: 1,
-        ease: 'easeOut'
+        ease: [0, 0.7, 0.8, 0.9]
       }
     },
     animate: {
-      clipPath: 'inset(0 0 0 0)',
+      clipPath: "inset(0 0 0 0)",
       transition: {
-        duration: 1.05,
-        delay: .75,
-        ease: 'easeOut'
+        duration: 0.75,
+        delay: 1.2,
+        ease: [0, 0.8, 0.5, 0.9]
+      }
+    }
+  };
+  var fromBottom = {
+    initial: {
+      clipPath: "inset(100% 0 0 0 )"
+      // transition: { duration: .8,  ease: [0, 0.8, 0.5, 0.9]},
+    },
+
+    animate: {
+      clipPath: "inset(0 0 0 0)",
+      transition: {
+        duration: 0.75,
+        ease: [0, 0.8, 0.5, 0.9]
       }
     }
   };
@@ -22497,7 +22852,7 @@ var Home = function Home() {
       return {
         width: i.width,
         transition: {
-          duration: 1,
+          duration: 0.75,
           delay: i.delay + i.shift
         }
       };
@@ -22506,16 +22861,18 @@ var Home = function Home() {
   var RotateInChildren = {
     initial: {
       opacity: 0,
-      rotate: 90,
-      y: 100
+      rotate: 45,
+      y: 100,
+      x: 100
     },
     animate: {
-      opacity: [0, .2, .5, .8, 1],
+      opacity: [0, 0.01, 0.02, 0.1, 0.5, 1],
       rotate: 0,
-      y: [100, 0],
+      y: 0,
+      x: 0,
       transition: {
-        ease: 'easeInOut',
-        duration: .9
+        ease: [0, 0.2, 0.7, 0.95],
+        duration: 0.5
       }
     }
     // exit:{
@@ -22526,6 +22883,7 @@ var Home = function Home() {
     // }
   };
 
+  var ContentFade = ' opacity .7s ease-in';
   var RotateInContainer = {
     initial: {
       opacity: 1
@@ -22534,8 +22892,8 @@ var Home = function Home() {
       opacity: 1,
       transition: {
         when: "beforeChildren",
-        delayChildren: 1.25,
-        staggerChildren: .5
+        delayChildren: 1.3,
+        staggerChildren: 0.15
       }
     }
     // exit:{
@@ -22552,25 +22910,39 @@ var Home = function Home() {
       opacity: 1,
       transition: {
         duration: 1,
-        delay: 4
+        delay: 3
       }
     }
   };
-  var underline = [{
-    delay: 3.5,
+  var fadeInOnView = {
+    initial: {
+      opacity: 0
+    },
+    animate: {
+      opacity: 1,
+      transition: {
+        duration: 1
+      }
+    }
+  };
+  (0,react.useEffect)(function () {
+    backgrountTransInView ? document.body.classList.add("bright") : document.body.classList.remove("bright");
+  }, [backgrountTransInView]);
+  var underline3 = [{
+    delay: 2.45,
     shift: 0,
-    width: '150px'
+    width: "118px"
   }, {
-    delay: 3.5,
+    delay: 2.4,
     shift: 1,
-    width: '20px'
+    width: "20px"
   }].map(function (item, i) {
     return /*#__PURE__*/(0,jsx_runtime.jsx)(motion.span, {
       animate: "animate",
       initial: "initial",
       variants: growLineFromLeft,
       custom: item,
-      class: "hl relative h-1 inline-block mt-2"
+      class: "hl relative h-1 inline-block mt-2 long-box-shadow"
     }, i);
   });
   var hero_image = homeContent.hero_image,
@@ -22579,13 +22951,14 @@ var Home = function Home() {
     return /*#__PURE__*/(0,jsx_runtime.jsx)(motion.h1, {
       variants: RotateInChildren,
       style: {
-        transformOrigin: 'top left'
+        transformOrigin: "top left",
+        fontSize: '5.5rem'
       },
       custom: {
         index: index,
         max: hero_image.title.headings.length
       },
-      className: "text-8xl font-sans georama font-semibold leading-tight long-shadow",
+      className: "font-serif georama font-normal leading-tight long-shadow tracking-wide",
       children: e
     }, e);
   });
@@ -22595,43 +22968,43 @@ var Home = function Home() {
       children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("section", {
         className: " block w-full relative",
         style: {
-          height: '92dvh',
-          minHeight: '400px'
+          height: "92dvh",
+          minHeight: "400px"
         },
         children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
           className: "hero-image block relative w-full h-full",
           children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Glide, {
             className: "main-image h-full",
             style: {
-              width: '110%'
+              width: "110%"
             },
             x: 0,
-            from: -10,
+            from: -30,
             ease: "easeOut",
-            duration: .5,
-            delay: 1.2,
+            duration: 0.4,
+            delay: 1.15,
             children: /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
               alt: hero_image.background.image.alt,
               className: "h-full object-cover",
               style: {
-                width: '110%'
+                width: "110%"
               },
               src: __webpack_require__(4040)("./".concat(hero_image.background.image.src))
             })
           }), /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
             class: "background-gradient absolute block w-full h-full z-10 top-0"
           })]
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(motion.div, {
+        }), " ", /*#__PURE__*/(0,jsx_runtime.jsx)(motion.div, {
           style: {
             y: LogoTrans,
-            left: '16%'
+            left: "7%"
           },
           animate: "animate",
           initial: "initial",
           variants: FadeIn,
-          className: "absolute top-28 left-40 z-20",
+          className: "absolute top-36 left-40 z-20",
           children: /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
-            className: "w-2/5",
+            className: "w-4/12",
             alt: homeContent.hero_image.title.image.alt,
             src: __webpack_require__(4040)("./".concat(hero_image.title.image.src))
           })
@@ -22639,9 +23012,9 @@ var Home = function Home() {
           children: [" ", /*#__PURE__*/(0,jsx_runtime.jsxs)(motion.div, {
             style: {
               y: HeadingTrans,
-              left: '15%'
+              left: "12%"
             },
-            className: "absolute top-48 z-30 mt-2",
+            className: "absolute top-52 z-30 mt-1",
             children: [/*#__PURE__*/(0,jsx_runtime.jsx)(motion.div, {
               variants: RotateInContainer,
               initial: "initial",
@@ -22649,119 +23022,271 @@ var Home = function Home() {
               children: headings
             }), /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
               style: {
-                transform: 'translate(150px, -20px)'
+                transform: "translate(170px, -23px)"
               },
-              className: "flex gap-12 paddingt-0 margint-0",
-              children: underline
+              className: "flex gap-6 paddingt-0 margint-0",
+              children: underline3
             })]
           })]
         }), /*#__PURE__*/(0,jsx_runtime.jsx)(motion.div, {
           style: {
             y: ImageYTrans,
-            height: '95%'
+            height: "98%"
           },
-          className: "hero-image absolute w-1/3 top-0  right-48 top-12 z-20",
+          className: "hero-image absolute w-5/12 top-0  right-40 top-12 z-20",
           children: /*#__PURE__*/(0,jsx_runtime.jsx)(Reveal, {
-            className: "relative block h-full w-5/6",
+            className: "relative block h-full w-11/12",
             variants: fromRight,
             children: /*#__PURE__*/(0,jsx_runtime.jsx)(Glide, {
               className: "main-image h-full",
               style: {
-                width: '110%'
+                width: "110%"
               },
               x: "-5px",
               ease: "easeIn",
-              duration: .9,
-              delay: 1.4,
+              duration: 0.75,
+              delay: 1.25,
               children: /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
-                className: "h-full w-full object-cover",
+                className: "h-full w-full object-cover main-image",
                 src: __webpack_require__(4040)("./".concat(hero_image.background.image.src))
               })
             })
           })
         })]
       }), /*#__PURE__*/(0,jsx_runtime.jsxs)("section", {
-        className: "section-1 mt-16",
-        children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
-          children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(Fade, {
-            opacityStart: 0,
-            opacityEnd: 1,
-            children: [/*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
-              className: "section-tag fade",
-              children: home_intro.section_1.section_tag
-            }), "      "]
-          }), /*#__PURE__*/(0,jsx_runtime.jsx)("h2", {
-            className: "heading",
-            children: home_intro.section_1.heading
-          })]
-        }), /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
-          className: "section-content",
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)("div", {
-            className: "hl"
-          }), /*#__PURE__*/(0,jsx_runtime.jsx)("p", {
-            className: "content",
-            children: home_intro.section_1.content
-          })]
-        })]
-      }), /*#__PURE__*/(0,jsx_runtime.jsxs)("section", {
-        className: "section-2",
-        children: [/*#__PURE__*/(0,jsx_runtime.jsx)("div", {
-          className: "container n1",
-          children: /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
-            children: [/*#__PURE__*/(0,jsx_runtime.jsx)("p", {
-              children: "Ethically Sourced."
-            }), /*#__PURE__*/(0,jsx_runtime.jsx)("p", {
-              children: "Dedication"
-            }), /*#__PURE__*/(0,jsx_runtime.jsx)("p", {
-              children: " Precision"
+        className: "home-main w-full flex flex-col",
+        children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("section", {
+          className: "section-1 mt-24 w-8/12",
+          style: {
+            marginLeft: 3 / 17 * 100 + "%"
+          },
+          children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+            className: "flex flex-row",
+            children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+              className: "w-1/2 relative block",
+              children: [/*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                transition: ContentFade,
+                once: true,
+                children: /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
+                  ref: section_1Tag,
+                  className: "section-tag text-xl m-6",
+                  children: home_intro.section_1.section_tag
+                })
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                transition: ContentFade,
+                once: true,
+                children: /*#__PURE__*/(0,jsx_runtime.jsx)("h2", {
+                  className: "heading georama w-full text-6xl",
+                  children: home_intro.section_1.heading
+                })
+              })]
+            }), /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+              className: "flex justify-center align-center w-1/2 self-center text-8xl relative block h-full",
+              children: /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+                className: "w-6/12 h-56 arrow-clip object-cover"
+              })
             })]
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
-          className: "container n1",
-          children: /*#__PURE__*/(0,jsx_runtime.jsxs)("picture", {
-            alt: "Picture of a building.",
-            children: [/*#__PURE__*/(0,jsx_runtime.jsx)("source", {
-              srcSet: __webpack_require__(4040)("./".concat(hero_image.background.image.src))
-            }), /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
-              src: __webpack_require__(4040)("./".concat(hero_image.background.image.src)),
-              alt: "Picture of a building."
-            })]
-          })
-        }), /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
-          className: "container n2",
-          children: [/*#__PURE__*/(0,jsx_runtime.jsx)("div", {
-            children: /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
-              className: "section-tag fade fadeInOnEntry",
-              children: "From Start To Finish"
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+            transition: ContentFade,
+            children: /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+              className: "section-content mt-12 mb-12 w-11/12 flex justify-between",
+              children: [/*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+                className: "hl w-1/12 mb-12"
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)("p", {
+                className: "content justify-self-end w-9/12 text-xl mt-12",
+                children: home_intro.section_1.content
+              })]
             })
-          }), /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
-            children: [/*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
-              children: "MULTIFAMILY RESIDENTIAL"
-            }), /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
-              children: "HISTORIC RENOVATIONS"
-            }), /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
-              children: "COMMERCIAL OFFICES"
-            }), /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
-              children: "RESTAURANTS AND RETAIL"
-            }), /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
-              children: "COMMUNITY SPACES"
-            }), /*#__PURE__*/(0,jsx_runtime.jsxs)("button", {
-              className: "btn",
-              children: [/*#__PURE__*/(0,jsx_runtime.jsx)("span", {
-                children: "About Us"
-              }), /*#__PURE__*/(0,jsx_runtime.jsx)("span", {
-                className: "btn-background"
+          })]
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)("section", {
+          className: "section-2  mt-16 w-full",
+          style: {
+            marginLeft: 3 / 17 * 100 + "%"
+          },
+          children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+            className: "container n1 relative block flex flex-row mb-0",
+            style: {
+              height: "500px"
+            },
+            children: [/*#__PURE__*/(0,jsx_runtime.jsx)(IsInViewVariants, {
+              className: "w-5/12 block relative overflow-hidden",
+              margin: '-200px',
+              once: true,
+              variants: fromBottom,
+              children: /*#__PURE__*/(0,jsx_runtime.jsxs)("picture", {
+                className: "w-full",
+                alt: "Picture of a building.",
+                children: [/*#__PURE__*/(0,jsx_runtime.jsx)("source", {
+                  srcSet: __webpack_require__(712)
+                }), /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
+                  className: "w-full object-cover h-full",
+                  src: __webpack_require__(712),
+                  alt: "Picture of a building."
+                })]
+              })
+            }), /*#__PURE__*/(0,jsx_runtime.jsxs)(motion.div, {
+              style: {
+                y: ScrollingWordsTrans
+              },
+              className: "text-7xl georama w-6/12 self-center flex justify-center  flex-row",
+              children: [/*#__PURE__*/(0,jsx_runtime.jsx)("p", {
+                className: " scrolling-upwards",
+                children: "Ethically Sourced."
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)("p", {
+                className: " scrolling-upwards",
+                children: "Dedication"
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)("p", {
+                className: " scrolling-upwards",
+                children: " Precision"
               })]
             })]
-          }), /*#__PURE__*/(0,jsx_runtime.jsxs)("picture", {
-            alt: "Picture of a building.",
-            className: "rollOutOnScroll",
-            children: [/*#__PURE__*/(0,jsx_runtime.jsx)("source", {
-              srcSet: "./assets/images/pexels-expect-best-323780.jpg"
-            }), /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
-              className: "reveal showUp",
-              src: "./assets/images/pexels-expect-best-323780.jpg",
-              alt: "Picture of a building."
+          }), /*#__PURE__*/(0,jsx_runtime.jsxs)("span", {
+            ref: backgroundTransition,
+            children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+              className: "container n2 flex mt-0 block relative h-fit",
+              children: [/*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+                className: "absolute",
+                children: /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                  transition: ContentFade,
+                  once: true,
+                  children: /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
+                    className: "section-tag",
+                    style: {
+                      transform: "rotate(90deg) translate(".concat(100 + "%", ", ").concat(800 + "%", ")")
+                    },
+                    children: "From Start To Finish"
+                  })
+                })
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+                className: "w-5/12 flex flex-col justify-center items-center",
+                children: /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+                  className: "w-6/12 text-xl georama flex flex-col justify-center gap-4",
+                  style: {
+                    height: "500px"
+                  },
+                  children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    children: [" ", /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
+                      children: "MULTIFAMILY RESIDENTIAL"
+                    })]
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    children: /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
+                      children: "HISTORIC RENOVATIONS"
+                    })
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    children: /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
+                      children: "COMMERCIAL OFFICES"
+                    })
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    children: /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
+                      children: "RESTAURANTS AND RETAIL"
+                    })
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    children: /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
+                      children: "COMMUNITY SPACES"
+                    })
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    children: /*#__PURE__*/(0,jsx_runtime.jsxs)("button", {
+                      className: "btn",
+                      children: [/*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+                        className: "btn-text",
+                        children: "About Us"
+                      }), /*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+                        className: "btn-background"
+                      })]
+                    })
+                  })]
+                })
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)(IsInViewVariants, {
+                className: "w-7/12 block relative overflow-hidden",
+                margin: '-200px',
+                once: true,
+                variants: fromBottom,
+                children: /*#__PURE__*/(0,jsx_runtime.jsxs)("picture", {
+                  alt: "Picture of a building.",
+                  className: "w-7/12",
+                  children: [/*#__PURE__*/(0,jsx_runtime.jsx)("source", {
+                    srcSet: __webpack_require__(2063)
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
+                    className: "w-full object-cover",
+                    style: {
+                      height: "500px"
+                    },
+                    src: __webpack_require__(2063),
+                    alt: "Picture of a building."
+                  })]
+                })
+              })]
+            }), /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+              className: "container n2 flex mt-28 mb-28 block relative",
+              children: [/*#__PURE__*/(0,jsx_runtime.jsx)(IsInViewVariants, {
+                className: "w-6/12 block relative overflow-hidden",
+                once: true,
+                variants: fromBottom,
+                children: /*#__PURE__*/(0,jsx_runtime.jsxs)("picture", {
+                  alt: "Picture of a building.",
+                  className: "w-7/12",
+                  children: [/*#__PURE__*/(0,jsx_runtime.jsx)("source", {
+                    srcSet: __webpack_require__(9988)
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
+                    className: "w-full object-cover",
+                    style: {
+                      height: "600px"
+                    },
+                    src: __webpack_require__(9988),
+                    alt: "Picture of a building."
+                  })]
+                })
+              }), /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+                className: "w-6/12 flex flex-col justify-center",
+                children: /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+                  className: "w-full h-full text-xl georama flex flex-col justify-center gap-4",
+                  children: [/*#__PURE__*/(0,jsx_runtime.jsxs)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    style: {
+                      transform: 'translate(-200px, -75px)'
+                    },
+                    children: [" ", /*#__PURE__*/(0,jsx_runtime.jsxs)("h3", {
+                      className: "w-full font-normal georama text-6xl mb-0 padding-0",
+                      children: [/*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+                        className: " font-bold",
+                        children: "Featured"
+                      }), " Project"]
+                    })]
+                  }), /*#__PURE__*/(0,jsx_runtime.jsxs)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    children: [" ", /*#__PURE__*/(0,jsx_runtime.jsx)("h4", {
+                      className: "ml-24 w-full",
+                      children: "The Gibson Project"
+                    })]
+                  }), /*#__PURE__*/(0,jsx_runtime.jsx)(FadeOnView, {
+                    transition: ContentFade,
+                    once: true,
+                    children: /*#__PURE__*/(0,jsx_runtime.jsxs)("button", {
+                      className: "btn ml-24",
+                      children: [/*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+                        className: "btn-text",
+                        children: "View Project"
+                      }), /*#__PURE__*/(0,jsx_runtime.jsx)("span", {
+                        className: "btn-background"
+                      })]
+                    })
+                  })]
+                })
+              })]
             })]
           })]
         })]
@@ -24781,22 +25306,22 @@ var SmoothScrollbar = /** @class */ (function (_super) {
 /* harmony default export */ var smooth_scrollbar = (SmoothScrollbar);
 //# sourceMappingURL=index.js.map
 ;// CONCATENATED MODULE: ./src/utils/components/MomentumScroll.jsx
-function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function MomentumScroll_typeof(obj) { "@babel/helpers - typeof"; return MomentumScroll_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, MomentumScroll_typeof(obj); }
+function MomentumScroll_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function MomentumScroll_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? MomentumScroll_ownKeys(Object(source), !0).forEach(function (key) { MomentumScroll_defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : MomentumScroll_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, MomentumScroll_toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) { if (call && (MomentumScroll_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function MomentumScroll_defineProperty(obj, key, value) { key = MomentumScroll_toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function MomentumScroll_toPropertyKey(arg) { var key = MomentumScroll_toPrimitive(arg, "string"); return MomentumScroll_typeof(key) === "symbol" ? key : String(key); }
+function MomentumScroll_toPrimitive(input, hint) { if (MomentumScroll_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (MomentumScroll_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 
 
 
@@ -24825,7 +25350,7 @@ var MomentumScroll = function MomentumScroll(_ref) {
     }]);
     return DisableScrollPlugin;
   }(ScrollbarPlugin);
-  _defineProperty(DisableScrollPlugin, "pluginName", 'disableScroll');
+  MomentumScroll_defineProperty(DisableScrollPlugin, "pluginName", 'disableScroll');
   var scrollRef = (0,react.useRef)(null);
   var disableScroll = useDisableScroll();
   (0,react.useLayoutEffect)(function () {
@@ -24838,7 +25363,7 @@ var MomentumScroll = function MomentumScroll(_ref) {
       scrollbar.addListener(function (_ref2) {
         var offset = _ref2.offset;
         setScrollPosition(function (prev) {
-          return _objectSpread(_objectSpread({}, prev), {}, {
+          return MomentumScroll_objectSpread(MomentumScroll_objectSpread({}, prev), {}, {
             scrollX: offset.x,
             scrollY: offset.y
           });
@@ -24918,7 +25443,63 @@ var Curtain = function Curtain(props) {
     }
   }), document.getElementById('curtainPortal'));
 };
+;// CONCATENATED MODULE: ./src/utils/components/Footer.jsx
+
+
+
+
+
+var Footer = function Footer(_ref) {
+  var links = _ref.links;
+  var FooterLinks = links.map(function (e) {
+    return /*#__PURE__*/(0,jsx_runtime.jsxs)("li", {
+      className: "nav-links text-xl uppercase georama",
+      children: [" ", /*#__PURE__*/(0,jsx_runtime.jsx)(NavLink, {
+        to: e.path,
+        children: e.name
+      }, e.name)]
+    }, e.path);
+  });
+  return /*#__PURE__*/(0,jsx_runtime.jsx)(jsx_runtime.Fragment, {
+    children: /*#__PURE__*/(0,jsx_runtime.jsxs)("footer", {
+      className: "relative w-full flex flex-col justify-center items-center pb-8",
+      children: [/*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+        className: "block relative w-9/12 pt-8 pb-3 flex items-center",
+        style: {
+          height: '120px'
+        },
+        children: /*#__PURE__*/(0,jsx_runtime.jsx)("img", {
+          className: "ml-9 h-full",
+          src: __webpack_require__(2075)
+        })
+      }), /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+        className: "w-10/12 flex",
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+          className: "w-6/12 flex justify-center items-enter",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)("h3", {
+            className: "georama text-7xl w-8/12",
+            children: "Build a dream that lasts generations."
+          })
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)("div", {
+          className: "w-6/12 flex justify-center items-start",
+          children: /*#__PURE__*/(0,jsx_runtime.jsx)("ul", {
+            className: "flex gap-2 flex-col",
+            children: FooterLinks
+          })
+        })]
+      }), /*#__PURE__*/(0,jsx_runtime.jsxs)("div", {
+        className: "pt-8 w-8/12 georama",
+        children: [/*#__PURE__*/(0,jsx_runtime.jsx)("p", {
+          children: "1101 SUTTER STREET, SAN FRANCISCO, CALIFORNIA 94109"
+        }), /*#__PURE__*/(0,jsx_runtime.jsx)("p", {
+          children: "T : 415.442.4800 E : INFO@MARTINBUILDING.COM"
+        })]
+      })]
+    })
+  });
+};
 ;// CONCATENATED MODULE: ./src/App.jsx
+
 
 
 
@@ -24962,14 +25543,16 @@ var App = function App() {
       children: /*#__PURE__*/(0,jsx_runtime.jsxs)(ScrollPositionProvider, {
         children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Nav, {
           links: links
-        }), /*#__PURE__*/(0,jsx_runtime.jsx)(components_MomentumScroll, {
-          children: /*#__PURE__*/(0,jsx_runtime.jsxs)("main", {
+        }), /*#__PURE__*/(0,jsx_runtime.jsxs)(components_MomentumScroll, {
+          children: [/*#__PURE__*/(0,jsx_runtime.jsxs)("main", {
             children: [/*#__PURE__*/(0,jsx_runtime.jsx)(Curtain, {
-              duration: 1,
+              duration: .5,
               delay: 1,
-              ease: [.1, .7, .8, .9]
+              ease: [.1, .9, .92, .95]
             }), /*#__PURE__*/(0,jsx_runtime.jsx)(Outlet, {})]
-          })
+          }), /*#__PURE__*/(0,jsx_runtime.jsx)(Footer, {
+            links: links
+          })]
         })]
       })
     })

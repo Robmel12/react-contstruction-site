@@ -11,6 +11,7 @@ import { Curtain } from "./utils/components/Curtain";
 import { useCurtainUpdate } from "./utils/hooks/useTriggerCurtain";
 import { DisableScrollProvider } from "./utils/hooks/useDisableScroll";
 import { ScrollPositionProvider } from "./utils/hooks/useScrollPosition";
+import { Footer } from "./utils/components/Footer";
 
 
 
@@ -46,6 +47,7 @@ const App = ()=>{
 
    
     </main>
+    <Footer links={links}/>
     </MomentumScroll>
     </ScrollPositionProvider>
     </DisableScrollProvider>

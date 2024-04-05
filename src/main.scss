@@ -34,6 +34,10 @@
 
 }
 // ::-webkit-scrollbar { width: 0 !important }
+footer{
+  background-color: var(--color1);
+  color: var(--color4);
+}
 html, body{
   margin: 0;
   position:relative;
@@ -60,7 +64,7 @@ body {
 
       background: var(--color1);
     
-      
+      transition: cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
   }
   overflow-x: hidden;
